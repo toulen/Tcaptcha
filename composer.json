@@ -1,0 +1,22 @@
+{
+  "name": "toulen/tcaptcha",
+  "keywords": ["captcha"],
+  "description": "some captcha with toulen",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Yan Tao",
+      "email": "317136305@qq.com",
+      "homepage": "http://www.mqman.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Tcaptcha\\": "src/"
+    }
+  }
+}
