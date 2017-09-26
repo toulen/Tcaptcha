@@ -170,7 +170,7 @@ class Tcaptcha
 
             $x = (($fontX - $this->fontSize) / 2 )+ ($fontX * $i) + 10;
 
-            imagettftext($image, $this->fontSize, rand(0 - $this->angle, $this->angle), $x, $fontY + $this->fontSize, $font, '../font/e.ttc', $str);
+            imagettftext($image, $this->fontSize, rand(0 - $this->angle, $this->angle), $x, $fontY + $this->fontSize, $font, __DIR__ . '/../font/e.ttc', $str);
 
         }
 
