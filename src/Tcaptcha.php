@@ -197,7 +197,7 @@ class Tcaptcha
         try{
             session_start();
 
-            $sessionCode = $_SESSION['tCaptcha'];
+            $sessionCode = isset($_SESSION['tCaptcha']) ? $_SESSION['tCaptcha'] : null;
         }catch(\Exception $e){
 
             throw new \Exception('SESSION ERROR...');
