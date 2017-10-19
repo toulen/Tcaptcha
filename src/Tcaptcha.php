@@ -75,6 +75,43 @@ class Tcaptcha
         $this->genertateImage($captchaInfo);
     }
 
+    private static function getSession($key){
+        if(class_exists('\Illuminate\Support\Facades\Session')){
+
+            return \Illuminate\Support\Facades\Session::get($key, '');
+
+        }else{
+            session_start();
+
+            return $_SESSION[$key];
+        }
+    }
+
+    private static function removeSession($key){
+        if(class_exists('\Illuminate\Support\Facades\Session')){
+
+            \Illuminate\Support\Facades\Session::remove($key);
+
+        }else{
+            session_start();
+
+            unset($_SESSION[$key]);
+        }
+    }
+
+    private static function setSession($key, $value){
+
+        if(class_exists('\Illuminate\Support\Facades\Session')){
+
+            \Illuminate\Support\Facades\Session::put($key, $value);
+            \Illuminate\Support\Facades\Session::save();
+        }else{
+            session_start();
+
+            $_SESSION[$key] = $value;
+        }
+
+    }
 
     /**
      * 生成验证码图片
@@ -89,9 +126,8 @@ class Tcaptcha
 
         // 存入SESSION
         try {
-            session_start();
 
-            $_SESSION['tCaptcha'] = md5($captchaInfo['answer']);
+            self::setSession('tCaptcha', md5($captchaInfo['answer']));
 
         }catch(\Exception $e){
             throw new \Exception('SESSION ERROR...');
@@ -105,7 +141,7 @@ class Tcaptcha
             $this->height = $this->fontSize + 20;
         }
 
-        ob_clean();
+        if(ob_get_length()) ob_clean();
 
         @header("Content-Type:image/png");
 
@@ -195,9 +231,9 @@ class Tcaptcha
         $code = md5($code);
 
         try{
-            session_start();
 
-            $sessionCode = isset($_SESSION['tCaptcha']) ? $_SESSION['tCaptcha'] : null;
+            $sessionCode = self::getSession('tCaptcha');
+
         }catch(\Exception $e){
 
             throw new \Exception('SESSION ERROR...');
@@ -205,7 +241,7 @@ class Tcaptcha
 
         if($code == $sessionCode){
 
-            unset($_SESSION['tCaptcha']);
+            self::removeSession('tCaptcha');
 
             return true;
         }
